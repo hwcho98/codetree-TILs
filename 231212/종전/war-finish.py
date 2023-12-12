@@ -2,20 +2,21 @@ import sys
 # sys.stdin = open("input.txt", "r")
 input = sys.stdin.readline
 
+# make square direction
 dr = (-1,-1,1,1)
 dc = (1,-1,-1,1)
 
+# add direction
 addr = (1,0,-1,0)
 addc = (0,1,0,-1)
 
-mover = (0,-1,0,1)
-movec = (1,0,-1,0)
-
+# there are 2 ways of direction, use function for convenience
 def move(r,c,dr,dc,d):
     return r+dr[d], c+dc[d]
 
+# make square (direction, answer)
 def make_sq(d,ans):
-    # print(pos)
+    # when choosing last V, there is only one point can be V
     if d == 2:
         r, c = pos[-1]
         rr, cc = move(r, c, dr, dc, d)
@@ -27,34 +28,34 @@ def make_sq(d,ans):
 
         return min(ans, tmp)
 
+    # for other cases, brute force
     r,c = pos[-1]
     rr,cc = move(r,c,dr,dc,d)
-    # rr = r+dr[d]
-    # cc = c+dc[d]
     while 0<=rr<n and 0<=cc<n:
         pos.append((rr,cc))
         ans = make_sq(d+1,ans)
         pos.pop()
         rr,cc = move(rr,cc,dr,dc,d)
-        # rr+=dr[d]
-        # cc+=dc[d]
     return ans
 
+# calculate each # of group, devide into triangle and rectangle
+# starting with each V of given rectangle,
+# goes outward along the boundary line (line by line),
+# as reaches the next vertex, and then calculate rest rectangle
 def cal():
-    # print(1)
+    # sum of each group
     s = [0]*5
     for t in range(4):
         tmp = 0
         r,c = pos[t]
+        # calculate triangle first
         while (r,c) != pos[(t+1)%4]:
             rr,cc = move(r,c,addr,addc,t)
-            # rr = r+addr[t]
-            # cc = r+addc[t]
             while 0<=rr<n and 0<=cc<n:
                 tmp += bd[rr][cc]
                 rr,cc = move(rr,cc,addr,addc,t)
             r,c = move(r,c,dr,dc,t)
-        # print(tmp)
+        # then rectangle: for each case
         rr,cc = move(r,c,addr,addc,t)
         if t == 0:
             for i in range(rr,n):
@@ -73,11 +74,8 @@ def cal():
                 for j in range(cc+1):
                     tmp += bd[i][j]
         s[t] = tmp
-        # print(s)
     s[4] = total-sum(s)
     return max(s)-min(s)
-
-
 
 n = int(input())
 bd = [list(map(int,input().split())) for _ in range(n)]
@@ -91,5 +89,4 @@ for r in range(2,n):
         pos = [(r,c)]
         tmp = make_sq(0,40000)
         ans = min(ans,tmp)
-        # print(ans)
 print(ans)
