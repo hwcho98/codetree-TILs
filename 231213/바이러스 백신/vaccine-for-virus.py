@@ -1,10 +1,18 @@
 import sys
 from collections import deque
-from itertools import combinations
 input = sys.stdin.readline
 
 dr = (1,0,-1,0)
 dc = (0,1,0,-1)
+
+def choose(cnt,idx):
+    if cnt == m:
+        bfs()
+        return
+    for i in range(idx,l):
+        chosen.append(hospital[i]+(0,))
+        choose(cnt+1,i+1)
+        chosen.pop()
 
 def bfs():
     vis = [[False]*n for _ in range(n)]
@@ -38,12 +46,7 @@ for i in range(n):
     for j in range(n):
         if bd[i][j] == 0: virus += 1
         elif bd[i][j] == 2: hospital.append((i,j))
+l = len(hospital)
 ans = 2500*(virus>0)
-
-tmp = list(combinations(hospital,m))
-for perm in tmp:
-    chosen = []
-    for p in perm:
-        chosen.append(p+(0,))
-    bfs()
+choose(0,0)
 print(ans if ans < 2500 else -1)
