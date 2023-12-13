@@ -40,7 +40,8 @@ for i in range(n):
         elif bd[i][j] == 2: hospital.append((i,j))
 ans = 2500*(virus>0)
 
-for perm in list(permutations(hospital,m)):
+tmp = list(permutations(hospital,m))
+for perm in tmp:
     chosen = []
     for p in perm:
         chosen.append(p+(0,))
