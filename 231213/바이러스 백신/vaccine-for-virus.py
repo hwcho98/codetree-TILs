@@ -1,6 +1,6 @@
 import sys
 from collections import deque
-from itertools import permutations
+from itertools import combinations
 input = sys.stdin.readline
 
 dr = (1,0,-1,0)
@@ -40,7 +40,7 @@ for i in range(n):
         elif bd[i][j] == 2: hospital.append((i,j))
 ans = 2500*(virus>0)
 
-tmp = list(permutations(hospital,m))
+tmp = list(combinations(hospital,m))
 for perm in tmp:
     chosen = []
     for p in perm:
