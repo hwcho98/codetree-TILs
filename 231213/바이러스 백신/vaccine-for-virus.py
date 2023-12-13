@@ -24,7 +24,7 @@ def bfs():
                     if virus == cnt:
                         global ans
                         ans = min(ans,s+1)
-                        break
+                        return
                     q.append((rr,cc,s+1))
                 elif bd[rr][cc] == 2:
                     q.append((rr,cc,s+1))
